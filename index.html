@@ -645,14 +645,16 @@ body::before {
     pointer-events: none;
   }
 
-  /* 実際に表示する画像：元の比率のまま全画面幅で固定 */
   .mobile-wipe-img {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: auto; /* ★ここがポイント！coverではなくautoにすることで一切切り取られません */
+    height: auto;
     z-index: -1;
+    /* ↓ここから追加：スマホのGPUを使って描画を劇的に軽くする */
+    transform: translateZ(0);
+    backface-visibility: hidden;
     will-change: clip-path;
   }
 
@@ -1014,26 +1016,26 @@ window.addEventListener('load', () => {
   }, 2500); 
 });
 
-// ===== スマホ版 トップ画像ワイプ効果 (比率維持・改良版) =====
+// ===== スマホ版 トップ画像ワイプ効果 (軽量化・カクつき防止版) =====
 const dummyImg = document.querySelector('.mobile-wipe-dummy');
 const fixedImg = document.querySelector('.mobile-wipe-img');
+let tickingWipe = false; // スクロール計算を間引くための変数
 
 if (dummyImg && fixedImg) {
   window.addEventListener('scroll', () => {
-    // スマホ幅(768px以下)の時のみ動作させる
-    if (window.innerWidth <= 768) {
-      // ダミー画像（一緒にスクロールされて上がっていく）の位置を取得
-      const rect = dummyImg.getBoundingClientRect();
-      // 固定画像の実際の高さを取得
-      const fixedImgHeight = fixedImg.offsetHeight;
-      
-      // 次のセクションが画像の下端より上に被さってきたら、その差分だけ画像を切り取る
-      const clipBottom = Math.max(0, fixedImgHeight - rect.bottom);
-      
-      fixedImg.style.clipPath = `inset(0 0 ${clipBottom}px 0)`;
-    } else {
-      // PC等で画面幅が広がった時はクリップ（切り取り）を解除
-      fixedImg.style.clipPath = 'none';
+    if (!tickingWipe) {
+      window.requestAnimationFrame(() => {
+        if (window.innerWidth <= 768) {
+          const rect = dummyImg.getBoundingClientRect();
+          const fixedImgHeight = fixedImg.offsetHeight;
+          const clipBottom = Math.max(0, fixedImgHeight - rect.bottom);
+          fixedImg.style.clipPath = `inset(0 0 ${clipBottom}px 0)`;
+        } else {
+          fixedImg.style.clipPath = 'none';
+        }
+        tickingWipe = false;
+      });
+      tickingWipe = true;
     }
   }, { passive: true });
 }
