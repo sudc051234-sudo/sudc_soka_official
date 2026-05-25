@@ -5,7 +5,6 @@
 <meta name="google-site-verification" content="KkppM7Loxp10__LGsxrA_xOMuVKmTDZh30qBTT2nmWs" />
 
 <style>
-/* ===== 全体設定 ===== */
 body {
   margin: 0;
   padding: 0;
@@ -28,11 +27,10 @@ body::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh; /* 画面の高さ分 */
-  /* ここで背景画像を指定 */
+  height: 100vh; 
   background: url("images/28937508_l.jpg") no-repeat center center;
-  background-size: cover; /* 画面いっぱいに広げる（縦長画面なら中央で切り抜かれる） */
-  z-index: -1; /* コンテンツの背面に配置 */
+  background-size: cover; 
+  z-index: -1; 
 }
 
 @media screen and (max-width: 768px) {
@@ -41,7 +39,6 @@ body::before {
   }
 }
 
-/* ===== Header (グラスモーフィズム適用) ===== */
 .header {
   display: flex;
   justify-content: space-between;
@@ -64,7 +61,6 @@ body::before {
   opacity: 0.7;
 }
 
-/* ===== Hero ===== */
 .hero {
   height: 100vh;
   display: flex;
@@ -73,7 +69,6 @@ body::before {
   position: relative;
 }
 
-/* Heroの背景オーバーレイ */
 .hero-bg {
   position: absolute;
   top: 0;
@@ -83,7 +78,7 @@ body::before {
   background: url("images/電.png") no-repeat center center;
   background-size: contain;
   background-attachment: fixed;
-  z-index: 5; /* hero-contentより背面に */
+  z-index: 5; 
 }
 
 .hero-content {
@@ -108,7 +103,6 @@ body::before {
   text-decoration: none;
   border-radius: 4px;
   transition: 0.3s;
-  /* Heroセクションの左揃えに対応 */
   margin-left: 0; 
 }
 .btn:hover {
@@ -169,30 +163,27 @@ body::before {
   padding-right: 0 !important;
 }
 
-
-/* ===== 公演カード (グラスモーフィズム適用) ===== */
 .show-card {
-  background: rgba(0,0,0,0.2); /* 透明度を上げ、背景の画像を見せる */
-  border: 1px solid #e6d78f55; /* 枠線を少し明るく */
+  background: rgba(0,0,0,0.2); 
+  border: 1px solid #e6d78f55; 
   padding: 30px;
-  margin: 25px 0; /* マージンを広げる */
-  border-radius: 12px; /* 角を丸く */
-  backdrop-filter: blur(10px); /* ボカシを強く */
+  margin: 25px 0; 
+  border-radius: 12px; 
+  backdrop-filter: blur(10px); 
 }
 
-/* ===== 公演コンテナ（ポスター配置用）レイアウト ===== */
 .show-container {
   display: grid;
   gap: 30px;
 }
 
-.show-card:not(.past-show) { /* ポスターを配置する公演カード */
+.show-card:not(.past-show) { 
   display: flex;
-  flex-direction: column; /* スマートフォン表示では縦並び */
+  flex-direction: column; 
   text-align: left;
 }
 
-@media (min-width: 768px) { /* PC/タブレット表示 */
+@media (min-width: 768px) { 
   .show-card:not(.past-show) {
     flex-direction: row;
     align-items: flex-start;
@@ -200,10 +191,10 @@ body::before {
 }
 
 .show-visual-box {
-  flex-shrink: 0; /* 縮小しない */
+  flex-shrink: 0; 
   width: 100%;
-  max-width: 250px; /* ポスターの最大幅 */
-  margin-bottom: 20px; /* スマホ用 */
+  max-width: 250px; 
+  margin-bottom: 20px; 
   margin-right: 0;
 }
 
@@ -217,7 +208,7 @@ body::before {
 .poster-img {
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1.414; /* A4縦長の比率 */
+  aspect-ratio: 1 / 1.414; 
   object-fit: cover;
   border-radius: 6px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.6);
@@ -1056,7 +1047,7 @@ if (dummyImg && fixedImg) {
   "@type": "TheaterGroup",
   "name": "創価大学演劇部",
   "alternateName": "SUDC",
-  "url": "https://sudc-soka.netlify.app/",
+  "url": "https://sudc-soka-official.vercel.app/",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "八王子市",
