@@ -669,6 +669,19 @@ body::before {
     width: 100vw;
     position: relative;
   }
+  .mobile-wipe-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: auto;
+    z-index: -1;
+    
+    /* translateZ(0) から translate3d に変更し、より強力にGPU描画を促す */
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: clip-path;
+  }
 
   /* ダミー画像：透明にして「画像の本当の高さ」分の空間だけを確保する */
   .mobile-wipe-dummy {
@@ -1251,19 +1264,36 @@ window.addEventListener('load', () => {
   }, 2500); 
 });
 
-// ===== スマホ版 トップ画像ワイプ効果 (軽量化・カクつき防止版) =====
+// ===== スマホ版 トップ画像ワイプ効果 (超軽量化版) =====
 const dummyImg = document.querySelector('.mobile-wipe-dummy');
 const fixedImg = document.querySelector('.mobile-wipe-img');
-let tickingWipe = false; // スクロール計算を間引くための変数
+let tickingWipe = false;
 
 if (dummyImg && fixedImg) {
+  let imgHeight = 0;
+  let initialTop = 0;
+
+  // 重い計算はリサイズ時や読み込み時のみに限定（キャッシュ化）
+  const updateDimensions = () => {
+    if (window.innerWidth <= 768) {
+      imgHeight = fixedImg.offsetHeight;
+      // ダミー画像のページ最上部からの絶対Y座標を記憶
+      initialTop = dummyImg.getBoundingClientRect().top + window.scrollY;
+    }
+  };
+
+  window.addEventListener('load', updateDimensions);
+  window.addEventListener('resize', updateDimensions);
+  updateDimensions(); // 初回実行
+
   window.addEventListener('scroll', () => {
     if (!tickingWipe) {
       window.requestAnimationFrame(() => {
         if (window.innerWidth <= 768) {
-          const rect = dummyImg.getBoundingClientRect();
-          const fixedImgHeight = fixedImg.offsetHeight;
-          const clipBottom = Math.max(0, fixedImgHeight - rect.bottom);
+          // getBoundingClientRect()を使わず、スクロール量だけで下端を計算
+          const currentBottom = initialTop - window.scrollY + imgHeight;
+          const clipBottom = Math.max(0, imgHeight - currentBottom);
+          
           fixedImg.style.clipPath = `inset(0 0 ${clipBottom}px 0)`;
         } else {
           fixedImg.style.clipPath = 'none';
@@ -1274,6 +1304,7 @@ if (dummyImg && fixedImg) {
     }
   }, { passive: true });
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   const diagCard = document.getElementById('diag-card-element');
   const btnStart = document.getElementById('btn-start-diag');
