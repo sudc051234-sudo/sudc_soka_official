@@ -278,7 +278,21 @@ body::before {
   will-change: transform;
   -webkit-box-reflect: none;
 }
-
+/* スマホ版（768px以下）はすりガラス効果をオフにして軽くする */
+@media screen and (max-width: 768px) {
+  .header, .show-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* 代わりに背景を少し濃くして文字を読みやすくする */
+  .header {
+    background: rgba(0,0,0,0.85); 
+  }
+  .show-card {
+    background: rgba(0,0,0,0.6);
+  }
+}
+  
 /* ===== スマホ版（768px以下） ===== */
 @media screen and (max-width: 768px) {
   .carousel img {
@@ -879,12 +893,12 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
 
       <div class="show-card">
         <div class="show-visual-box">
-          <img src="images/1.png" class="poster-img">
+          <img src="images/1.png" class="poster-img" alt="2026 創大祭公演 タンポポん メインビジュアル">
         </div>
         <div class="show-info">
-          <h3 class="glow-soft">2026 新歓公演「タンポポん」ここに公演のタイトル</h3>
-          <p>日程：20○○年○月○日</p>
-          <p>場所：創価大学 ○○ホール</p>
+          <h3 class="glow-soft">2026 創大祭公演「タンポポん」</h3>
+          <p>日程：2026年10月4日</p>
+          <p>場所：創価大学 B301教室</p>
           <p>ここにいろいろ説明</p>
           <a class="btn btn-show" href="予約フォームのURLをここに記述">予約フォームへ</a>
         </div>
@@ -1105,41 +1119,44 @@ if (dummyImg && fixedImg) {
 
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "TheaterGroup",
-  "name": "創価大学演劇部",
-  "alternateName": "SUDC",
-  "url": "https://sudc-soka-official.vercel.app/",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "八王子市",
-    "addressRegion": "東京都",
-    "addressCountry": "JP"
-  },
-  "description": "創価大学で活動する演劇部。通称SUDC。"
+[
   {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "演劇未経験でも入部できますか？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "はい、大歓迎です。創価大学演劇部（SUDC）では基礎から丁寧にサポートするため、未経験からでも役者や裏方として活躍できます。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "次回の公演はいつですか？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "2026年度新歓公演を予定しています。最新の日程やチケット予約については、当サイトの公演情報をご確認ください。"
-          }
+    "@context": "https://schema.org",
+    "@type": "TheaterGroup",
+    "name": "創価大学演劇部",
+    "alternateName": "SUDC",
+    "url": "https://sudc-soka-official.vercel.app/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "八王子市",
+      "addressRegion": "東京都",
+      "addressCountry": "JP"
+    },
+    "description": "創価大学で活動する演劇部。通称SUDC。"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "演劇未経験でも入部できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、大歓迎です。創価大学演劇部（SUDC）では基礎から丁寧にサポートするため、未経験からでも役者や裏方として活躍できます。"
         }
-      ]
-    }
-}
+      },
+      {
+        "@type": "Question",
+        "name": "次回の公演はいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年度創大祭公演を予定しています。最新の日程やチケット予約については、当サイトの公演情報をご確認ください。"
+        }
+      }
+    ]
+  }
+]
 </script>
 </body>
 </html>
