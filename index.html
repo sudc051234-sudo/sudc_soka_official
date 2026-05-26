@@ -721,6 +721,109 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
     -webkit-box-reflect: none !important;
   }
 }
+  /* --- 診断セクション全体の設定 --- */
+.diag-container {
+  perspective: 1000px;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 500px;
+}
+
+/* カード風のUI本体 */
+.diag-card-ui {
+  background: #1a1a1a;
+  border: 2px solid #e6d78f; /* 金色の細い枠線 */
+  border-radius: 15px;
+  padding: 40px 25px;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* アニメーション用クラス */
+.card-draw { animation: cardDrawIn 0.5s forwards; }
+.card-discard { animation: cardDiscardOut 0.5s forwards; }
+
+@keyframes cardDrawIn {
+  0% { transform: translateY(100px) rotate(5deg); opacity: 0; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+
+@keyframes cardDiscardOut {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-100px) rotate(-5deg); opacity: 0; }
+}
+
+/* 各画面の表示切り替え */
+.diag-screen { display: none; opacity: 0; }
+.diag-screen.active { display: block; opacity: 1; }
+
+/* ボタンデザイン：金背景に黒文字（視認性重視） */
+.card-main-btn {
+  background: #e6d78f;
+  color: #000;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: 0.3s;
+  text-decoration: none;
+  display: inline-block;
+}
+.card-main-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+/* 選択肢ボタン：黒背景に金枠 */
+.card-opt-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #e6d78f;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 100%;
+  font-size: 0.9rem;
+}
+  
+.card-opt-btn:hover {
+  background: rgba(230,215,143,0.1);
+  border-color: #fff;
+}
+
+/* その他の装飾要素 */
+.card-icon { margin-bottom: 20px; text-align: center; }
+.card-icon-img {
+  width: 300px; /* 画像の幅を調整。元の絵文字と同じくらいのサイズ感にしています */
+  height: auto; /* 縦横比を維持 */
+  display: block; /* 画像の下にできる不要な隙間をなくす */
+  margin: 0 auto; /* 中央揃え */
+}
+.card-title { font-size: 1.4rem; margin-bottom: 15px; color: #e6d78f; }
+.card-intro-text { color: #aaa; font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; }
+.q-number-text { color: #e6d78f; font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 10px; }
+.q-main-text { font-size: 1.1rem; line-height: 1.7; min-height: 4em; }
+
+.card-progress { height: 2px; background: #333; margin-bottom: 20px; }
+#diag-progress-inner { height: 100%; background: #e6d78f; width: 0%; transition: width 0.3s; }
+
+.result-pre { font-size: 0.8rem; color: #888; }
+.result-title-text { font-size: 2rem; color: #e6d78f; margin: 10px 0 20px; }
+.result-scroll-area { max-height: 150px; overflow-y: auto; margin-bottom: 25px; padding-right: 5px; }
+.result-desc-text { text-align: left; font-size: 0.9rem; color: #ccc; line-height: 1.8; }
+.card-reset-link { background: none; border: none; color: #666; text-decoration: underline; cursor: pointer; margin-top: 15px; font-size: 0.8rem; }
+
 </style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -942,6 +1045,53 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
       </a>
     </div>
   </section>
+  <section id="diagnosis" class="section fade-section">
+  <h2 class="title" style="color: #e6d78f; letter-spacing: 0.3em; margin-bottom: 10px;">POSITION DIAGNOSIS</h2>
+  <p style="margin-bottom: 40px; color: #888; font-size: 0.85rem;">あなたの適性をカードが導き出します</p>
+
+  <div class="diag-container">
+    
+    <div id="diag-card-element" class="diag-card-ui">
+      
+    <div id="diag-start" class="diag-screen active">
+      <div class="card-icon">
+        <img src="images/card.png" alt="診断開始のカードアイコン" class="card-icon-img">
+      </div>
+        <h3 class="card-title">適性ポジション診断</h3>
+        <p class="card-intro-text">全7問の質問から、演劇部におけるあなたの「最強の役割」を決定します。</p>
+        <button id="btn-start-diag" class="card-main-btn">診断を開始する</button>
+      </div>
+
+      <div id="diag-question" class="diag-screen">
+        <div class="card-progress">
+          <div id="diag-progress-inner"></div>
+        </div>
+        <p id="q-number" class="q-number-text">CARD 01</p>
+        <h3 id="q-text" class="q-main-text">質問文がここに入ります</h3>
+        <div class="diag-options">
+          <button id="opt-a" class="card-opt-btn">選択肢A</button>
+          <button id="opt-b" class="card-opt-btn">選択肢B</button>
+        </div>
+      </div>
+
+      <div id="diag-loading" class="diag-screen">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">ANALYZING...</p>
+      </div>
+
+      <div id="diag-result" class="diag-screen">
+        <p class="result-pre">Your Position is...</p>
+        <h2 id="result-title" class="result-title-text">【役者】</h2>
+        <div class="result-scroll-area">
+          <p id="result-desc" class="result-desc-text">説明文が入ります。</p>
+        </div>
+        <div class="result-actions">
+          <a href="#join" class="card-main-btn">この役職で Join！</a>
+          <button id="btn-reset-diag" class="card-reset-link">もう一度引く</button>
+        </div>
+      </div>
+
+    </div> </div> </section>
 
   <footer class="footer">
     <p class="glow-soft">© 2026 SUDC（創価大学演劇部）</p>
@@ -1124,6 +1274,130 @@ if (dummyImg && fixedImg) {
     }
   }, { passive: true });
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const diagCard = document.getElementById('diag-card-element');
+  const btnStart = document.getElementById('btn-start-diag');
+  const btnOptA = document.getElementById('opt-a');
+  const btnOptB = document.getElementById('opt-b');
+  const btnReset = document.getElementById('btn-reset-diag');
+
+  if (!btnStart) return;
+
+  const diagQuestions = [
+    { text: "ドラマや映画を観た後、誰かに語りたくなるのは？", axis: "target", w: 2, A: "緻密な伏線や物語の凄さ", B: "登場人物の性格や関係性" },
+    { text: "ホームパティー。あなたがこだわるのは？", axis: "target", w: 1, A: "料理の質や飾り付けの完成度", B: "全員が楽しめているかの空気" },
+    { text: "初めての場所へ旅行。計画の立て方は？", axis: "method", w: 2, A: "事前にルートを徹底的に調べる", B: "その場の気分と直感で決める" },
+    { text: "素敵なカフェに入った時、まず何を感じる？", axis: "method", w: 1, A: "照明やインテリアのこだわり", B: "なんとなく落ち着くという感性" },
+    { text: "大切な人への誕生日プレゼント。贈るなら？", axis: "form", w: 2, A: "ずっと形に残って使えるモノ", B: "食事や旅行などの特別な体験" },
+    { text: "自分の部屋の模様替え。何を一番重視する？", axis: "form", w: 1, A: "お気に入りの家具や雑貨", B: "照明や音楽などの雰囲気作り" },
+    { text: "チームで何かを作る時、あなたはどっち？", axis: "balance", w: 1, A: "全員の意見を繋いで調和させる", B: "自分のこだわりを一点突破させる" }
+  ];
+
+  const diagResults = {
+    actor: { title: "【役者】", desc: "人の感情に敏感で、形のない空気感を操る天才。舞台上で生きることで、観る人の心を直接揺さぶる。あなたの存在そのものが作品の華になります。" },
+    costume: { title: "【衣装・メイク】", desc: "人への強い興味と、目に見える形へのこだわりを併せ持つセンスの持ち主。役者の魅力を視覚から引き出し、キャラクターを具現化する魔法使いです。" },
+    production: { title: "【制作】", desc: "人と関わることを愛し、物事を緻密に計算・計画できる力。予算管理から広報、お客様の案内まで、公演をビジネスの視点で成功へ導くリーダーです。" },
+    stagemanager: { title: "【舞台監督】", desc: "現場の人間をまとめ上げ、物理的な安全と進行を緻密に管理する。舞台を成立させるための最強の司令塔。あなたの「きっかけ」で世界が動き出します。" },
+    sound: { title: "【音響】", desc: "作品のクオリティを徹底的に追求し、目に見えない「音」で心を揺さぶる。感性豊かなサウンドクリエイター。一音で劇場の空気を支配する快感を。" },
+    light: { title: "【照明】", desc: "作品の世界観にこだわり、光という形で舞台に彩りを与える。直感とセンスで景色を一変させる光の魔術師。空間に深みとドラマを作る仕事です。" },
+    script: { title: "【脚本】", desc: "物語の構造を緻密に計算し、形のない言葉でゼロから世界を構築する。論理的な思考を持つクリエイター。あなたのペンが、関わる全ての人の魂を動かします。" },
+    art: { title: "【宣伝美術・舞台美術】", desc: "作品を象徴する「形」を計算し尽くして作り上げる。パンフレットから大道具まで。あなたの生み出す一点のモノが、作品の顔になります。" },
+    director: { title: "【演出】", desc: "すべてを俯瞰し、全体のバランスを整えるオーケストラの指揮者。バラバラの才能と専門性を一つの美しい作品に繋ぐ人。物語の最終責任者です。" }
+  };
+
+  let currentQ = 0;
+  let diagScore = { target: 0, method: 0, form: 0, balance: 0 };
+
+  // カードを切り替えるアニメーション関数
+  function changeCard(nextScreenId, callback) {
+    diagCard.classList.remove('card-draw');
+    diagCard.classList.add('card-discard'); // 前のカードを捨てる
+
+    setTimeout(() => {
+      // 画面切り替え
+      document.querySelectorAll('.diag-screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(nextScreenId).classList.add('active');
+      
+      if (callback) callback();
+
+      // 新しいカードを引く
+      diagCard.classList.remove('card-discard');
+      diagCard.classList.add('card-draw');
+    }, 400);
+  }
+
+  function startDiagnosis() {
+    currentQ = 0;
+    diagScore = { target: 0, method: 0, form: 0, balance: 0 };
+    changeCard('diag-question', updateQuestionData);
+  }
+
+  function updateQuestionData() {
+    const q = diagQuestions[currentQ];
+    document.getElementById('q-number').textContent = `CARD 0${currentQ + 1}`;
+    document.getElementById('q-text').textContent = q.text;
+    btnOptA.textContent = q.A;
+    btnOptB.textContent = q.B;
+    document.getElementById('diag-progress-inner').style.width = `${(currentQ / 7) * 100}%`;
+  }
+
+  function selectOption(choice) {
+    const q = diagQuestions[currentQ];
+    const point = (choice === 'A') ? q.w : -q.w;
+
+    if (q.axis === 'balance') diagScore.balance = point;
+    else diagScore[q.axis] += point;
+
+    currentQ++;
+    
+    if (currentQ < 7) {
+      changeCard('diag-question', updateQuestionData);
+    } else {
+      showLoadingResult();
+    }
+  }
+
+  function showLoadingResult() {
+    changeCard('diag-loading', () => {
+      setTimeout(() => {
+        calculateFinalResult();
+      }, 1500);
+    });
+  }
+
+  function calculateFinalResult() {
+    let resKey = "";
+    let midCount = 0;
+    if (Math.abs(diagScore.target) === 1) midCount++;
+    if (Math.abs(diagScore.method) === 1) midCount++;
+    if (Math.abs(diagScore.form) === 1) midCount++;
+
+    if (midCount >= 2 && diagScore.balance > 0) {
+      resKey = "director";
+    } else {
+      const t = diagScore.target > 0 ? "作品" : "人";
+      const m = diagScore.method > 0 ? "計算" : "感情";
+      const f = diagScore.form > 0 ? "有形" : "無形";
+      const map = {
+        "人_感情_無形": "actor", "人_感情_有形": "costume",
+        "人_計算_無形": "production", "人_計算_有形": "stagemanager",
+        "作品_感情_無形": "sound", "作品_感情_有形": "light",
+        "作品_計算_無形": "script", "作品_計算_有形": "art"
+      };
+      resKey = map[`${t}_${m}_${f}`];
+    }
+
+    const result = diagResults[resKey];
+    document.getElementById('result-title').textContent = result.title;
+    document.getElementById('result-desc').textContent = result.desc;
+    changeCard('diag-result');
+  }
+
+  btnStart.addEventListener('click', startDiagnosis);
+  btnOptA.addEventListener('click', () => selectOption('A'));
+  btnOptB.addEventListener('click', () => selectOption('B'));
+  btnReset.addEventListener('click', () => changeCard('diag-start'));
+});
 
 </script>
 <script type="application/ld+json">
