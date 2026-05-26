@@ -1046,7 +1046,7 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
     </div>
   </section>
   <section id="diagnosis" class="section fade-section">
-  <h2 class="title" style="color: #e6d78f; letter-spacing: 0.3em; margin-bottom: 10px;">POSITION DIAGNOSIS</h2>
+  <h2 class="title" style="color: #e6d78f; letter-spacing: 0.3em; margin-bottom: 10px;">舞台役職別<br>タイプ診断</h2>
   <p style="margin-bottom: 40px; color: #888; font-size: 0.85rem;">あなたの適性をカードが導き出します</p>
 
   <div class="diag-container">
@@ -1058,7 +1058,7 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
         <img src="images/card.png" alt="診断開始のカードアイコン" class="card-icon-img">
       </div>
         <h3 class="card-title">適性ポジション診断</h3>
-        <p class="card-intro-text">全7問の質問から、演劇部におけるあなたの「最強の役割」を決定します。</p>
+        <p class="card-intro-text">全7問の質問から、演劇部におけるあなた向きの「最強の役職」を決定します。</p>
         <button id="btn-start-diag" class="card-main-btn">診断を開始する</button>
       </div>
 
@@ -1285,7 +1285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const diagQuestions = [
     { text: "ドラマや映画を観た後、誰かに語りたくなるのは？", axis: "target", w: 2, A: "緻密な伏線や物語の凄さ", B: "登場人物の性格や関係性" },
-    { text: "ホームパティー。あなたがこだわるのは？", axis: "target", w: 1, A: "料理の質や飾り付けの完成度", B: "全員が楽しめているかの空気" },
+    { text: "ホームパーティー。あなたがこだわるのは？", axis: "target", w: 1, A: "料理の質や飾り付けの完成度", B: "全員が楽しめているかの空気" },
     { text: "初めての場所へ旅行。計画の立て方は？", axis: "method", w: 2, A: "事前にルートを徹底的に調べる", B: "その場の気分と直感で決める" },
     { text: "素敵なカフェに入った時、まず何を感じる？", axis: "method", w: 1, A: "照明やインテリアのこだわり", B: "なんとなく落ち着くという感性" },
     { text: "大切な人への誕生日プレゼント。贈るなら？", axis: "form", w: 2, A: "ずっと形に残って使えるモノ", B: "食事や旅行などの特別な体験" },
@@ -1300,7 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     stagemanager: { title: "【舞台監督】", desc: "現場の人間をまとめ上げ、物理的な安全と進行を緻密に管理する。舞台を成立させるための最強の司令塔。あなたの「きっかけ」で世界が動き出します。" },
     sound: { title: "【音響】", desc: "作品のクオリティを徹底的に追求し、目に見えない「音」で心を揺さぶる。感性豊かなサウンドクリエイター。一音で劇場の空気を支配する快感を。" },
     light: { title: "【照明】", desc: "作品の世界観にこだわり、光という形で舞台に彩りを与える。直感とセンスで景色を一変させる光の魔術師。空間に深みとドラマを作る仕事です。" },
-    script: { title: "【脚本】", desc: "物語の構造を緻密に計算し、形のない言葉でゼロから世界を構築する。論理的な思考を持つクリエイター。あなたのペンが、関わる全ての人の魂を動かします。" },
+    script: { title: "【脚本】", desc: "物語の構造を緻密に計算し、言葉の力でゼロから世界を構築する。論理的な思考を持つクリエイター。あなたのペンが、関わる全ての人の魂を動かします。" },
     art: { title: "【宣伝美術・舞台美術】", desc: "作品を象徴する「形」を計算し尽くして作り上げる。パンフレットから大道具まで。あなたの生み出す一点のモノが、作品の顔になります。" },
     director: { title: "【演出】", desc: "すべてを俯瞰し、全体のバランスを整えるオーケストラの指揮者。バラバラの才能と専門性を一つの美しい作品に繋ぐ人。物語の最終責任者です。" }
   };
