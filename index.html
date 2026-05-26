@@ -285,20 +285,6 @@ body::before {
     height: 100%;       /* 100vhだと下まで届かない場合があるので変更 */
   }
 }
-/* スマホ版（768px以下）はすりガラス効果をオフにして軽くする */
-@media screen and (max-width: 768px) {
-  .header, .show-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  /* 代わりに背景を少し濃くして文字を読みやすくする */
-  .header {
-    background: rgba(0,0,0,0.85); 
-  }
-  .show-card {
-    background: rgba(0,0,0,0.6);
-  }
-}
   
 /* ===== スマホ版（768px以下） ===== */
 @media screen and (max-width: 768px) {
