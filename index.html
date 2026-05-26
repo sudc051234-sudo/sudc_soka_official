@@ -278,6 +278,13 @@ body::before {
   will-change: transform;
   -webkit-box-reflect: none;
 }
+@media screen and (max-width: 768px) {
+  /* スマホ版では背景の固定を解除して描画負荷を下げる */
+  body::before {
+    position: absolute; /* fixedから変更 */
+    height: 100%;       /* 100vhだと下まで届かない場合があるので変更 */
+  }
+}
 /* スマホ版（768px以下）はすりガラス効果をオフにして軽くする */
 @media screen and (max-width: 768px) {
   .header, .show-card {
