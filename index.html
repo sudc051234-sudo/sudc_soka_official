@@ -866,14 +866,16 @@ body:has(#shows.no-show) .nav a[href="#shows"] {
   border-left: 1px solid rgba(230,215,143,0.3);
   padding-left: 15px;
 }
-/* ===== ヘッダーを最前面に出す（タップ不可の修正） ===== */
+/* ===== ヘッダーを最前面に出す（タップ不可＆はみ出し修正版） ===== */
 header {
-  z-index: 9999 !important; /* どの要素よりも一番上に配置する */
-  position: fixed !important; /* スクロールしても常に上部に固定 */
+  z-index: 9999 !important;   /* どの要素よりも一番上に配置する */
+  position: fixed !important;  /* スクロールしても常に上部に固定 */
   top: 0 !important;
   left: 0 !important;
+  right: 0 !important;         /* 右端の位置を固定して横はみ出しを防ぐ */
   width: 100% !important;
-  pointer-events: auto !important; /* タップ操作を確実に有効化する */
+  box-sizing: border-box !important; /* 内側の余白(padding)を含めて100%に収める（最重要） */
+  pointer-events: auto !important;   /* タップ操作を確実に有効化する */
 }
 </style>
   <meta charset="utf-8">
